@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Story Rewriter</title>
+</head>
+<body>
+  <textarea id="inputText" rows="10" cols="50" placeholder="أدخل نص القصة هنا..."></textarea>
+  <br />
+  <button onclick="rewrite()">إعادة كتابة القصة</button>
+  <pre id="result"></pre>
+
+  <script>
+    async function rewrite() {
+      const script = document.getElementById('inputText').value;
+      const resultEl = document.getElementById('result');
+      resultEl.textContent = '⏳ جاري المعالجة...';
+
+      try {
+        const res = await fetch('https://your-api.onrender.com/rewrite', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ script })
+        });
+
+        const data = await res.json();
+        resultEl.textContent = data.rewritten || '❌ لم يتم الحصول على نتيجة.';
+      } catch (err) {
+        resultEl.textContent = '❌ Error: Failed to fetch';
+      }
+    }
+  </script>
+</body>
+</html>
